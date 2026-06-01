@@ -1,0 +1,11 @@
+{
+    "vic-product-pdf": {
+        "general": {
+            "title": "Produkt-PDF-Download"
+        },
+        "button": {
+            "download": "Als PDF herunterladen",
+            "loading": "PDF wird erstellt…"
+        }
+    }
+}

@@ -1,0 +1,35 @@
+{
+    "name": "vicmescan/vic-product-pdf",
+    "description": "Download product data sheet as PDF from the admin detail page",
+    "version": "1.0.0",
+    "type": "shopware-platform-plugin",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Vicmescan",
+            "homepage": "https://github.com/Vicmescan"
+        }
+    ],
+    "require": {
+        "shopware/core": "~6.7.0",
+        "dompdf/dompdf": "^3.0"
+    },
+    "extra": {
+        "shopware-plugin-class": "Vic\\ProductPdf\\VicProductPdf",
+        "label": {
+            "de-DE": "Produkt-PDF-Download",
+            "en-GB": "Product PDF Download",
+            "es-ES": "Descarga de producto en PDF"
+        },
+        "description": {
+            "de-DE": "Fügt einen Button im Admin-Produkt hinzu, der ein Produktdatenblatt als PDF herunterlädt.",
+            "en-GB": "Adds a button in the admin product detail to download a product data sheet as PDF.",
+            "es-ES": "Añade un botón en el detalle de producto del admin para descargar la ficha de producto en PDF."
+        }
+    },
+    "autoload": {
+        "psr-4": {
+            "Vic\\ProductPdf\\": "src/"
+        }
+    }
+}

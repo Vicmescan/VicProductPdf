@@ -1,0 +1,19 @@
+{% block sw_product_detail_actions_abort %}
+<mt-button
+    v-tooltip.bottom="tooltipCancel"
+    :disabled="isLoading"
+    variant="secondary"
+    size="default"
+    @click="onCancel"
+>
+    {{ $t('global.default.cancel') }}
+</mt-button>
+<mt-button
+    variant="secondary"
+    size="default"
+    :disabled="!productId || isPdfLoading"
+    @click="onDownloadPdf"
+>
+    {{ isPdfLoading ? '...' : $t('vic-product-pdf.button.download') }}
+</mt-button>
+{% endblock %}
