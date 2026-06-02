@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="https://raw.githubusercontent.com/shopware/shopware/trunk/src/Core/System/SystemConfig/Schema/config.xsd">
+
+    <card>
+        <title>VicProductPdf</title>
+        <title lang="de-DE">VicProductPdf</title>
+
+        <component name="vic-custom-fields-select">
+            <name>customFieldsWhitelist</name>
+            <label>Zusatzfelder im PDF anzeigen</label>
+            <label lang="en-GB">Custom fields to show in PDF</label>
+            <helpText>Felder auswählen, die im PDF erscheinen sollen. Keine Auswahl = keine Zusatzfelder im PDF.</helpText>
+            <helpText lang="en-GB">Select which fields appear in the PDF. No selection = no custom fields in PDF.</helpText>
+        </component>
+    </card>
+
+</config>

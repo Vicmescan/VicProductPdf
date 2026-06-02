@@ -9,6 +9,7 @@ Adds a **"Download as PDF"** button to the storefront product detail page, allow
 - Download button on the storefront product detail page
 - PDF includes: main image, name, SKU, gross/net price, manufacturer, stock, EAN, description, properties, variants and custom fields
 - **Per-product toggle** via a custom field checkbox in the admin (Custom fields tab)
+- **Configurable custom fields whitelist** — choose exactly which Zusatzfelder appear in the PDF via a checkbox UI in the plugin settings
 - Public route, no authentication required: `/product-pdf/{productId}`
 - PDF generation powered by [DOMPDF](https://github.com/dompdf/dompdf) (already bundled with Shopware)
 - Admin product detail bar also shows a download button (opens the same public URL)
@@ -48,6 +49,14 @@ bin/console cache:clear
 
 The download button will appear on the storefront product page.
 
+### Configuring which custom fields appear in the PDF
+
+1. Go to **Extensions → My extensions** and open the **VicProductPdf** settings
+2. Under **"Custom fields to show in PDF"**, check each field you want to include
+3. Save
+
+Only the selected fields will appear in the PDF. If no fields are selected, the custom fields section is omitted entirely.
+
 ### Direct URL
 
 ```
@@ -69,6 +78,7 @@ VicProductPdf/
     │   └── ProductPdfController.php               # Public route, generates the PDF
     └── Resources/
         ├── config/
+        │   ├── config.xml                         # Plugin settings (custom fields whitelist)
         │   ├── routes.xml
         │   └── services.xml
         ├── views/
@@ -77,7 +87,11 @@ VicProductPdf/
         │   └── vic-product-pdf/
         │       └── product-pdf.html.twig          # HTML template for the PDF
         └── app/administration/src/
-            └── module/vic-product-pdf/            # Admin download button
+            └── module/vic-product-pdf/
+                ├── component/
+                │   └── vic-custom-fields-select/  # Checkbox UI for the whitelist setting
+                └── extension/
+                    └── sw-product-detail/         # Admin download button
 ```
 
 ---

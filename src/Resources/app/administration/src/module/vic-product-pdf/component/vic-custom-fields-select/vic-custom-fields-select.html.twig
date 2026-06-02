@@ -1,0 +1,31 @@
+{% block vic_custom_fields_select %}
+<div class="vic-custom-fields-select">
+
+    <sw-loader v-if="isLoading"></sw-loader>
+
+    <sw-alert v-else-if="groupedFields.length === 0" variant="info">
+        Keine Zusatzfelder für Produkte gefunden.
+    </sw-alert>
+
+    <template v-else>
+        <div
+            v-for="group in groupedFields"
+            :key="group.id"
+            class="vic-custom-fields-select__group"
+            style="margin-bottom: 16px;"
+        >
+            <p style="font-weight: bold; margin-bottom: 6px; color: #52667a;">{{ group.name }}</p>
+
+            <mt-checkbox
+                v-for="field in group.fields"
+                :key="field.id"
+                :label="getFieldLabel(field)"
+                :modelValue="isChecked(field.name)"
+                @update:modelValue="onToggle(field.name, $event)"
+                style="margin-bottom: 4px;"
+            ></mt-checkbox>
+        </div>
+    </template>
+
+</div>
+{% endblock %}

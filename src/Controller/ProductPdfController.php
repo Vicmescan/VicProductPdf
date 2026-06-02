@@ -61,7 +61,7 @@ class ProductPdfController
 
         $properties   = $this->collectProperties($product);
         $variants     = $this->collectVariants($product);
-        $customFields = $this->collectCustomFields($product);
+        $customFields = $this->collectCustomFields($product, $this->resolveWhitelist());
 
         $html = $this->twig->render('@VicProductPdf/vic-product-pdf/product-pdf.html.twig', [
             'product'      => $product,
@@ -178,7 +178,8 @@ class ProductPdfController
         return $result;
     }
 
-    private function collectCustomFields(mixed $product): array
+    /** @param string[] $whitelist */
+    private function collectCustomFields(mixed $product, array $whitelist): array
     {
         $fields = $product->getCustomFields();
         if (empty($fields)) {
@@ -190,10 +191,24 @@ class ProductPdfController
             if ($value === null || $value === '') {
                 continue;
             }
+            if (!\in_array($key, $whitelist, true)) {
+                continue;
+            }
             $label          = ucwords(str_replace(['_', '-'], ' ', $key));
             $result[$label] = is_array($value) ? implode(', ', $value) : (string) $value;
         }
 
         return $result;
+    }
+
+    /** @return string[] */
+    private function resolveWhitelist(): array
+    {
+        $raw = $this->systemConfigService->get('VicProductPdf.config.customFieldsWhitelist');
+        if (!\is_string($raw) || trim($raw) === '') {
+            return [];
+        }
+
+        return array_values(array_filter(array_map('trim', explode(',', $raw))));
     }
 }
