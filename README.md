@@ -17,6 +17,11 @@ Adds a **"Download as PDF"** button to the storefront product detail page, allow
 
 ---
 
+<img width="1039" height="788" alt="Captura desde 2026-06-02 11-34-59" src="https://github.com/user-attachments/assets/9a6b4b14-a990-406a-a9eb-0d6df4be7ef4" />
+<img width="1081" height="914" alt="Captura desde 2026-06-02 11-35-39" src="https://github.com/user-attachments/assets/98c429c5-2822-4e79-a56f-df208d7edf80" />
+<img width="844" height="912" alt="Captura desde 2026-06-02 11-36-14" src="https://github.com/user-attachments/assets/19be431e-b4bd-42c7-b925-b6be73ed6f2e" />
+
+
 ## Requirements
 
 | Dependency | Version |
