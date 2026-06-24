@@ -11,7 +11,7 @@ Adds a **"Download as PDF"** button to the storefront product detail page, allow
 - **Per-product toggle** via a custom field checkbox in the admin (Custom fields tab)
 - **Configurable custom fields whitelist** — choose exactly which Zusatzfelder appear in the PDF via a checkbox UI in the plugin settings
 - Public route, no authentication required: `/product-pdf/{productId}`
-- PDF generation powered by [DOMPDF](https://github.com/dompdf/dompdf) (already bundled with Shopware)
+- PDF generation powered by [DOMPDF](https://github.com/dompdf/dompdf) (bundled inside the plugin — no extra installation needed)
 - Admin product detail bar also shows a download button (opens the same public URL)
 - Custom fields are automatically removed on plugin uninstall (unless user data is kept)
 
@@ -29,13 +29,19 @@ Adds a **"Download as PDF"** button to the storefront product detail page, allow
 |---|---|
 | Shopware | ~6.7.0 |
 | PHP | ^8.2 |
-| dompdf/dompdf | ^3.0 (bundled with Shopware) |
+| dompdf/dompdf | ^3.0 (bundled in the plugin) |
 
 ---
 
 ## Installation
 
+The plugin is self-contained — dompdf is bundled inside the `vendor/` folder, so no extra Composer step is needed.
+
 ```bash
+# 1. Clone or copy the plugin into your Shopware project
+git clone https://github.com/Vicmescan/VicProductPdf custom/plugins/VicProductPdf
+
+# 2. Activate it
 bin/console plugin:refresh
 bin/console plugin:install --activate VicProductPdf
 bin/build-administration.sh
@@ -77,9 +83,12 @@ Publicly accessible without authentication. The `productId` is the product UUID 
 
 ```
 VicProductPdf/
-├── composer.json
+├── composer.json          # Plugin metadata & Shopware version constraint
+├── composer-bundle.json   # Minimal manifest used to generate vendor/ (dompdf only)
+├── composer-bundle.lock
+├── vendor/                # Bundled dompdf — committed so the plugin is drop-in
 └── src/
-    ├── VicProductPdf.php                          # Lifecycle: creates/removes custom fields
+    ├── VicProductPdf.php                          # Lifecycle + boot() loads bundled vendor/
     ├── Controller/
     │   └── ProductPdfController.php               # Public route, generates the PDF
     └── Resources/
