@@ -12,6 +12,7 @@ Adds a **"Download as PDF"** button to the storefront product detail page, allow
 - **Configurable custom fields whitelist** — choose exactly which Zusatzfelder appear in the PDF via a checkbox UI in the plugin settings
 - Public route, no authentication required: `/product-pdf/{productId}`
 - PDF generation powered by [DOMPDF](https://github.com/dompdf/dompdf) (bundled inside the plugin — no extra installation needed)
+- **Multilingual PDF** — labels and product data adapt to the active storefront language (DE, EN, ES; falls back to EN)
 - Admin product detail bar also shows a download button (opens the same public URL)
 - Custom fields are automatically removed on plugin uninstall (unless user data is kept)
 
