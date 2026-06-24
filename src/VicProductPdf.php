@@ -37,7 +37,7 @@ class VicProductPdf extends Plugin
             return;
         }
 
-        $ids = array_map(fn ($e) => ['id' => $e->getId()], $result->getElements());
+        $ids = array_values(array_map(fn ($e) => ['id' => $e->getId()], $result->getElements()));
         $repo->delete($ids, $context->getContext());
     }
 
