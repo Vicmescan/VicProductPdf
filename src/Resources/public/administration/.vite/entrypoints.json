@@ -1,0 +1,23 @@
+{
+  "base": "/bundles/vicproductpdf/administration/",
+  "entryPoints": {
+    "vic-product-pdf": {
+      "css": [],
+      "dynamic": [],
+      "js": [
+        "/bundles/vicproductpdf/administration/assets/vic-product-pdf-DOLls2XI.js"
+      ],
+      "legacy": false,
+      "preload": []
+    }
+  },
+  "legacy": false,
+  "metadatas": {},
+  "version": [
+    "7.1.0",
+    7,
+    1,
+    0
+  ],
+  "viteServer": null
+}
