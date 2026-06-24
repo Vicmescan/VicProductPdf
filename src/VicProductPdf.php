@@ -12,6 +12,15 @@ use Shopware\Core\System\CustomField\CustomFieldTypes;
 
 class VicProductPdf extends Plugin
 {
+    public function boot(): void
+    {
+        parent::boot();
+        $autoload = __DIR__ . '/../vendor/autoload.php';
+        if (file_exists($autoload)) {
+            require_once $autoload;
+        }
+    }
+
     public function install(InstallContext $context): void
     {
         $this->createCustomFields($context->getContext());
