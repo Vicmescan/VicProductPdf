@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="de">
+<html lang="{{ locale }}">
 <head>
 <meta charset="UTF-8"/>
 <style>
@@ -190,7 +190,7 @@ body {
 <div class="header">
     <table class="header-inner"><tr>
         <td><div class="shop-name">{{ shopName }}</div>
-            <div class="doc-label">Produktdatenblatt</div></td>
+            <div class="doc-label">{{ labels.docLabel }}</div></td>
     </tr></table>
 </div>
 
@@ -203,28 +203,28 @@ body {
         {% if imageDataUri %}
             <img src="{{ imageDataUri }}" alt="{{ product.name }}"/>
         {% else %}
-            <div class="img-placeholder">Kein Bild</div>
+            <div class="img-placeholder">{{ labels.noImage }}</div>
         {% endif %}
     </td>
     <td class="info-cell">
         <div class="product-name">{{ product.name }}</div>
-        <div class="product-sku">Art.-Nr.: {{ product.productNumber }}</div>
+        <div class="product-sku">{{ labels.articleNumber }}: {{ product.productNumber }}</div>
 
         {% if priceGross %}
             <div class="price-gross">{{ priceGross }}</div>
         {% endif %}
         {% if priceNet %}
-            <div class="price-net">{{ priceNet }} (netto)
-                {% if product.tax %} · {{ product.tax.taxRate }}% MwSt.{% endif %}
+            <div class="price-net">{{ priceNet }} ({{ labels.net }})
+                {% if product.tax %} · {{ product.tax.taxRate }}% {{ labels.vat }}{% endif %}
             </div>
         {% endif %}
 
         {% if product.manufacturer %}
-        <div class="meta-row"><strong>Hersteller:</strong> {{ product.manufacturer.name }}</div>
+        <div class="meta-row"><strong>{{ labels.manufacturer }}:</strong> {{ product.manufacturer.name }}</div>
         {% endif %}
 
         {% if product.stock is not null %}
-        <div class="meta-row"><strong>Lagerbestand:</strong> {{ product.stock }} Stück</div>
+        <div class="meta-row"><strong>{{ labels.stock }}:</strong> {{ product.stock }}</div>
         {% endif %}
 
         {% if product.ean %}
@@ -232,7 +232,7 @@ body {
         {% endif %}
 
         {% if product.weight %}
-        <div class="meta-row"><strong>Gewicht:</strong> {{ product.weight }} kg</div>
+        <div class="meta-row"><strong>{{ labels.weight }}:</strong> {{ product.weight }} kg</div>
         {% endif %}
     </td>
 </tr>
@@ -241,13 +241,13 @@ body {
 {# ── Description ── #}
 {% set desc = product.description %}
 {% if desc %}
-<div class="section-title">Beschreibung</div>
+<div class="section-title">{{ labels.description }}</div>
 <div class="description">{{ desc|striptags('<p><br><strong><em><b><i><ul><ol><li>')|raw }}</div>
 {% endif %}
 
 {# ── Properties ── #}
 {% if properties is not empty %}
-<div class="section-title">Eigenschaften</div>
+<div class="section-title">{{ labels.properties }}</div>
 <table class="prop-table">
 {% for groupName, values in properties %}
 <tr>
@@ -260,14 +260,14 @@ body {
 
 {# ── Variants ── #}
 {% if variants is not empty %}
-<div class="section-title">Varianten</div>
+<div class="section-title">{{ labels.variants }}</div>
 <table class="variant-table">
 <thead>
 <tr>
-    <th>Variante</th>
-    <th>Art.-Nr.</th>
-    <th>Preis (brutto)</th>
-    <th>Lager</th>
+    <th>{{ labels.variantCol }}</th>
+    <th>{{ labels.articleCol }}</th>
+    <th>{{ labels.priceCol }}</th>
+    <th>{{ labels.stockCol }}</th>
 </tr>
 </thead>
 <tbody>
@@ -285,7 +285,7 @@ body {
 
 {# ── Custom fields ── #}
 {% if customFields is not empty %}
-<div class="section-title">Zusatzfelder</div>
+<div class="section-title">{{ labels.customFields }}</div>
 <table class="prop-table">
 {% for label, value in customFields %}
 <tr>
@@ -298,7 +298,7 @@ body {
 
 {# ── Footer ── #}
 <div class="footer">
-    {{ shopName }} &nbsp;·&nbsp; Erstellt am {{ generatedAt }}
+    {{ shopName }} &nbsp;·&nbsp; {{ labels.generatedAt }} {{ generatedAt }}
 </div>
 
 </div>{# /page-body #}

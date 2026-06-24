@@ -4,10 +4,11 @@ namespace Vic\ProductPdf\Controller;
 
 use Dompdf\Dompdf;
 use Dompdf\Options;
-use Shopware\Core\Framework\Context;
 use Shopware\Core\Framework\DataAbstractionLayer\EntityRepository;
 use Shopware\Core\Framework\DataAbstractionLayer\Search\Criteria;
+use Shopware\Core\System\SalesChannel\SalesChannelContext;
 use Shopware\Core\System\SystemConfig\SystemConfigService;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Twig\Environment;
@@ -20,6 +21,7 @@ class ProductPdfController
         private readonly SystemConfigService $systemConfigService,
         private readonly Environment $twig,
         private readonly string $projectDir,
+        private readonly RequestStack $requestStack,
     ) {}
 
     #[Route(
@@ -27,9 +29,9 @@ class ProductPdfController
         name: 'frontend.vic.product.pdf',
         methods: ['GET']
     )]
-    public function download(string $productId): Response
+    public function download(string $productId, SalesChannelContext $salesChannelContext): Response
     {
-        $context = Context::createDefaultContext();
+        $context = $salesChannelContext->getContext();
 
         $criteria = new Criteria([$productId]);
         $criteria->addAssociations([
@@ -45,6 +47,9 @@ class ProductPdfController
         if (!$product) {
             return new Response('Product not found', Response::HTTP_NOT_FOUND);
         }
+
+        $locale = $this->requestStack->getCurrentRequest()?->getLocale() ?? 'en-GB';
+        $labels = $this->getLabels($locale);
 
         $shopName = (string) ($this->systemConfigService->get('core.basicInformation.shopName') ?? 'Shop');
 
@@ -72,7 +77,9 @@ class ProductPdfController
             'properties'   => $properties,
             'variants'     => $variants,
             'customFields' => $customFields,
-            'generatedAt'  => (new \DateTime())->format('d.m.Y'),
+            'generatedAt'  => $this->formatDate($locale),
+            'labels'       => $labels,
+            'locale'       => substr($locale, 0, 2),
         ]);
 
         $options = new Options();
@@ -98,6 +105,80 @@ class ProductPdfController
                 'Pragma'              => 'private',
             ]
         );
+    }
+
+    private function getLabels(string $locale): array
+    {
+        $all = [
+            'de' => [
+                'docLabel'      => 'Produktdatenblatt',
+                'noImage'       => 'Kein Bild',
+                'articleNumber' => 'Art.-Nr.',
+                'net'           => 'netto',
+                'vat'           => 'MwSt.',
+                'manufacturer'  => 'Hersteller',
+                'stock'         => 'Lagerbestand',
+                'weight'        => 'Gewicht',
+                'description'   => 'Beschreibung',
+                'properties'    => 'Eigenschaften',
+                'variants'      => 'Varianten',
+                'variantCol'    => 'Variante',
+                'articleCol'    => 'Art.-Nr.',
+                'priceCol'      => 'Preis (brutto)',
+                'stockCol'      => 'Lager',
+                'customFields'  => 'Zusatzfelder',
+                'generatedAt'   => 'Erstellt am',
+            ],
+            'en' => [
+                'docLabel'      => 'Product Data Sheet',
+                'noImage'       => 'No image',
+                'articleNumber' => 'SKU',
+                'net'           => 'net',
+                'vat'           => 'VAT',
+                'manufacturer'  => 'Manufacturer',
+                'stock'         => 'Stock',
+                'weight'        => 'Weight',
+                'description'   => 'Description',
+                'properties'    => 'Properties',
+                'variants'      => 'Variants',
+                'variantCol'    => 'Variant',
+                'articleCol'    => 'SKU',
+                'priceCol'      => 'Price (gross)',
+                'stockCol'      => 'Stock',
+                'customFields'  => 'Additional fields',
+                'generatedAt'   => 'Generated on',
+            ],
+            'es' => [
+                'docLabel'      => 'Ficha de producto',
+                'noImage'       => 'Sin imagen',
+                'articleNumber' => 'Ref.',
+                'net'           => 'neto',
+                'vat'           => 'IVA',
+                'manufacturer'  => 'Fabricante',
+                'stock'         => 'Stock',
+                'weight'        => 'Peso',
+                'description'   => 'Descripción',
+                'properties'    => 'Propiedades',
+                'variants'      => 'Variantes',
+                'variantCol'    => 'Variante',
+                'articleCol'    => 'Ref.',
+                'priceCol'      => 'Precio (con IVA)',
+                'stockCol'      => 'Stock',
+                'customFields'  => 'Campos adicionales',
+                'generatedAt'   => 'Generado el',
+            ],
+        ];
+
+        $lang = strtolower(substr($locale, 0, 2));
+
+        return $all[$lang] ?? $all['en'];
+    }
+
+    private function formatDate(string $locale): string
+    {
+        $lang = strtolower(substr($locale, 0, 2));
+
+        return (new \DateTime())->format($lang === 'en' ? 'F j, Y' : 'd.m.Y');
     }
 
     private function buildImageDataUri(mixed $media): ?string

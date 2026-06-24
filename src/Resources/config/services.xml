@@ -9,6 +9,7 @@
             <argument type="service" id="Shopware\Core\System\SystemConfig\SystemConfigService"/>
             <argument type="service" id="twig"/>
             <argument>%kernel.project_dir%</argument>
+            <argument type="service" id="request_stack"/>
             <tag name="controller.service_arguments"/>
         </service>
     </services>
