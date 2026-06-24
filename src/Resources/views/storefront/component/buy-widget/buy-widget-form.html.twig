@@ -3,7 +3,7 @@
 {% block buy_widget_buy_form_inner %}
     {{ parent() }}
 
-    {% if product.customFields.vic_product_pdf_enabled %}
+    {% if product.translated.customFields.vic_product_pdf_enabled %}
     <div class="vic-pdf-download mt-3">
         <a href="{{ path('frontend.vic.product.pdf', { productId: product.id }) }}"
            class="btn btn-outline-secondary w-100"
